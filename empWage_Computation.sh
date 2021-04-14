@@ -6,13 +6,16 @@ isFullTime=1
 isPartTime=2
 isAbsent=0
 wagePerHr=20
-totalSalary==0
+empHrs_inMonth=100
 workingDaysPerMonth=20
 
-empCheck=$((RANDOM%3))
+totalEmpHrs=0
+totalWorkingDays=0
 
-for (( day=1; day<=$workingDaysPerMonth; day++ ))
+while [[ $totalEmpHrs -lt $empHrs_inMonth && $totalWorkingDays -lt $workingDaysPerMonth ]]
 do
+   ((totalWorkingDays++))
+   empCheck=$((RANDOM%3))
    case $empCheck in
             $isFullTime)
                echo "Employee is Present"
@@ -27,7 +30,11 @@ do
                ;;
    esac
    dailyWage=$(($empWorkingHours*$wagePerHr))
-   totalSalary=$(($totalSalary + $dailyWage))
+   totalEmpHrs=$(($totalEmpHrs+$empWorkingHours))
+
 done
 
+totalSalary=$(($totalEmpHrs*$workingDaysPerMonth))
+echo $totalSalary
 echo $dailyWage
+
