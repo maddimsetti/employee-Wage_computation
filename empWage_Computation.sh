@@ -6,10 +6,14 @@ isFullTime=1
 isPartTime=2
 isAbsent=0
 wagePerHr=20
+totalSalary==0
+workingDaysPerMonth=20
 
-#UC4
 empCheck=$((RANDOM%3))
-case $empCheck in
+
+for (( day=1; day<=$workingDaysPerMonth; day++ ))
+do
+   case $empCheck in
             $isFullTime)
                echo "Employee is Present"
                empWorkingHours=8
@@ -21,7 +25,9 @@ case $empCheck in
                echo "Employee is Absent"
                empWorkingHours=0
                ;;
-esac
-dailyWage=$(($empWorkingHours*$wagePerHr))
+   esac
+   dailyWage=$(($empWorkingHours*$wagePerHr))
+   totalSalary=$(($totalSalary + $dailyWage))
+done
 
 echo $dailyWage
