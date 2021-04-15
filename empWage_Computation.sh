@@ -12,11 +12,8 @@ workingDaysPerMonth=20
 totalEmpHrs=0
 totalWorkingDays=0
 
-while [[ $totalEmpHrs -lt $empHrs_inMonth && $totalWorkingDays -lt $workingDaysPerMonth ]]
-do
-   ((totalWorkingDays++))
-   empCheck=$((RANDOM%3))
-   case $empCheck in
+function getWorkingHours() {
+  case $1 in
             $isFullTime)
                echo "Employee is Present"
                empWorkingHours=8
@@ -29,12 +26,16 @@ do
                empWorkingHours=0
                ;;
    esac
-   dailyWage=$(($empWorkingHours*$wagePerHr))
-   totalEmpHrs=$(($totalEmpHrs+$empWorkingHours))
+   echo $empWorkingHours
+}
 
+while [[ $totalEmpHrs -lt $empHrs_inMonth && $totalWorkingDays -lt $workingDaysPerMonth ]]
+do
+   ((totalWorkingDays++))
+   empWorkingHours="$( getWorkingHours $((RANDOM%3)) )"
+   totalEmpHrs=$(( $totalEmpHrs+$empWorkingHours ))
 done
 
 totalSalary=$(($totalEmpHrs*$workingDaysPerMonth))
-echo $totalSalary
-echo $dailyWage
+
 
