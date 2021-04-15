@@ -13,29 +13,35 @@ totalEmpHrs=0
 totalWorkingDays=0
 
 function getWorkingHours() {
-  case $1 in
+  local $empCheck=$1
+  case $empCheck in
             $isFullTime)
-               echo "Employee is Present"
                empWorkingHours=8
                ;;
             $isPartTime)
                empWorkingHours=8
                ;;
             *)
-               echo "Employee is Absent"
                empWorkingHours=0
                ;;
    esac
    echo $empWorkingHours
 }
 
+function getEmpWage() {
+    local empHr=$1
+    echo $(($empHr*$wagePerHr))
+}
+
 while [[ $totalEmpHrs -lt $empHrs_inMonth && $totalWorkingDays -lt $workingDaysPerMonth ]]
 do
    ((totalWorkingDays++))
-   empWorkingHours="$( getWorkingHours $((RANDOM%3)) )"
+   empCheck=$((RANDOM%3))
+   empWorkingHours="$( getWorkingHours $empCheck )"
    totalEmpHrs=$(( $totalEmpHrs+$empWorkingHours ))
+   dailyWage[$totalWorkingDays]="$( getEmpWage $empWorkingHours )"
 done
 
 totalSalary=$(($totalEmpHrs*$workingDaysPerMonth))
 
-
+echo ${dailyWage[@]}
