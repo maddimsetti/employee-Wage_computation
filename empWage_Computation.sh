@@ -12,6 +12,7 @@ workingDaysPerMonth=20
 totalEmpHrs=0
 totalWorkingDays=0
 
+declare -A dailyWage;
 function getWorkingHours() {
   local $empCheck=$1
   case $empCheck in
@@ -39,9 +40,10 @@ do
    empCheck=$((RANDOM%3))
    empWorkingHours="$( getWorkingHours $empCheck )"
    totalEmpHrs=$(( $totalEmpHrs+$empWorkingHours ))
-   dailyWage[$totalWorkingDays]="$( getEmpWage $empWorkingHours )"
+   dailyWage["Day "$totalWorkingDays]="$( getEmpWage $empWorkingHours )"
 done
 
 totalSalary=$(($totalEmpHrs*$workingDaysPerMonth))
 
 echo ${dailyWage[@]}
+echo ${!dailyWage[@]}
